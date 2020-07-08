@@ -1,0 +1,15 @@
+{
+  "name": "alexnown.path",
+  "description": "Creating and movement along baked paths.",
+  "version": "0.0.1",
+  "unity": "2018.4",
+  "displayName": "Ultimate path",
+  "samples": [
+    {
+      "displayName": "Samples",
+      "description": "Simple use cases",
+      "path": "Samples~"
+    }
+  ],
+  "type": "library"
+}
