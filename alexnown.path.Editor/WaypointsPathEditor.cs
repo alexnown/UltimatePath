@@ -22,7 +22,7 @@ namespace alexnown.path
             serializedObject.Update();
             EditorGUILayout.PropertyField(_serializedIsCyclic);
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(_serializedPointsArray);
+            EditorGUILayout.PropertyField(_serializedPointsArray, true);
             requireUpdatePath |= EditorGUI.EndChangeCheck();
             serializedObject.ApplyModifiedProperties();
             if (requireUpdatePath)
