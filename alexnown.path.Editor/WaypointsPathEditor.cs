@@ -47,7 +47,8 @@ namespace alexnown.path
             }
             else EditorGUILayout.HelpBox("Path not cached!", MessageType.Warning);
             GUILayout.Space(10);
-            var hasPathDrawer = pointPath.TryGetComponent(out PathGizmosDrawer drawer);
+            var drawer = pointPath.GetComponent<PathGizmosDrawer>();
+            var hasPathDrawer = drawer != null;
             if (GUILayout.Button(hasPathDrawer ? "Remove gizmos drawer" : "Add gizmos drawer"))
             {
                 if (hasPathDrawer) GameObject.DestroyImmediate(drawer);
@@ -91,8 +92,8 @@ namespace alexnown.path
         {
             serializedObject.Update();
             var pointPath = target as WaypointsPathCreator;
-            var hasPathDrawer = pointPath.TryGetComponent(out PathGizmosDrawer drawer);
-            var nodeColor = hasPathDrawer ? drawer.Color : Color.cyan;
+            var drawer = pointPath.GetComponent<PathGizmosDrawer>();
+            var nodeColor = drawer != null ? drawer.Color : Color.cyan;
             var currentEvent = Event.current;
             bool addPointMode = currentEvent.shift;
             bool removePointMode = currentEvent.control;
