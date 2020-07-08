@@ -1,9 +1,13 @@
 {
   "name": "alexnown.path",
   "description": "Creating and movement along baked paths.",
-  "version": "0.0.1",
+  "version": "0.0.1-preview.2",
   "unity": "2018.4",
   "displayName": "Ultimate path",
+  "keywords": [
+        "path", 
+        "waypoints"
+    ], 
   "samples": [
     {
       "displayName": "Samples",
@@ -11,5 +15,9 @@
       "path": "Samples~"
     }
   ],
+  "repository": {
+        "type": "git", 
+        "url": "https://github.com/alexnown/UltimatePath.git"
+    }, 
   "type": "library"
 }
