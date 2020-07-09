@@ -15,7 +15,7 @@ namespace alexnown.path
             var path = new StaticPath();
             Assert.IsNull(path.Points);
             Assert.IsNull(path.Distances);
-            Assert.IsFalse(path.Cyclic);
+            Assert.IsFalse(path.IsCyclic);
             path.Points = new Vector3[0];
             path.RecalculateDistances();
             Assert.IsNull(path.Distances);
@@ -24,7 +24,7 @@ namespace alexnown.path
             path.RecalculateDistances();
             Assert.AreEqual(2, path.Distances.Length);
             Assert.AreEqual(1, path.GetLength());
-            path.Cyclic = true;
+            path.IsCyclic = true;
             Assert.AreEqual(2, path.GetLength());
         }
 
@@ -35,9 +35,9 @@ namespace alexnown.path
             path.RecalculateDistances();
             Assert.AreEqual(3, path.GetLength(false));
             Assert.AreEqual(4, path.GetLength(true));
-            path.Cyclic = false;
+            path.IsCyclic = false;
             Assert.AreEqual(path.GetLength(false), path.GetLength());
-            path.Cyclic = true;
+            path.IsCyclic = true;
             Assert.AreEqual(path.GetLength(true), path.GetLength());
         }
 

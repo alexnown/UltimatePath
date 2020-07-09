@@ -4,7 +4,7 @@ using UnityEngine;
 namespace alexnown.path
 {
     [CustomEditor(typeof(WaypointsPathCreator))]
-    public class WaypointsPathEditor : Editor
+    public class WaypointsPathCreatorEditor : Editor
     {
         private int _pointIndexForPositionHandle = -1;
         private SerializedProperty _serializedPointsArray;
@@ -79,7 +79,7 @@ namespace alexnown.path
             _textStyle.fontSize = 20;
             _serializedPointsArray = serializedObject.FindProperty("Points");
             _serializedStoreInLocalSpace = serializedObject.FindProperty("_storePointsInLocalSpace");
-            _serializedIsCyclic = serializedObject.FindProperty("_path").FindPropertyRelative("Cyclic");
+            _serializedIsCyclic = serializedObject.FindProperty("_path").FindPropertyRelative("IsCyclic");
         }
 
         private bool DrawClickableNode(Vector3 worldPos, float handlerSize, Color color)
