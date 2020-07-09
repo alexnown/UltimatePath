@@ -1,3 +1,10 @@
+# [0.0.2] - 2020-07-09
+
+## Changes
+
+* StaticPathWalker splited into StaticPathFollower and MovingAlongPath components. StaticPathFollower sets the position on the path by DistancePassed value. MovingAlongPath implements moving along path.
+* Renamed StaticPath Cyclic value to IsCyclic.
+
 # [0.0.1] - 2020-07-08
 
 ## New Features

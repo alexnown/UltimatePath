@@ -7,7 +7,7 @@ namespace alexnown.path
         public StaticPath Path => _path;
         public bool StorePointsInLocalSpace => _storePointsInLocalSpace;
         public Vector3[] Waypoints => _path?.Points;
-        public bool IsCyclic => _path.Cyclic;
+        public bool IsCyclic => _path.IsCyclic;
 
         public Vector3[] Points = new[] { Vector3.zero, Vector3.right };
         [SerializeField]

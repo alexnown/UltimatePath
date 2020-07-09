@@ -5,7 +5,7 @@ namespace alexnown.path
     [System.Serializable]
     public class StaticPath
     {
-        public bool Cyclic;
+        public bool IsCyclic;
         public Vector3[] Points;
         public float[] Distances;
 
@@ -23,22 +23,22 @@ namespace alexnown.path
                 Distances[i] = distanceSum;
             }
         }
-        public int SegmentsCount() => SegmentsCount(Cyclic);
+        public int SegmentsCount() => SegmentsCount(IsCyclic);
         public int SegmentsCount(bool isCyclic)
         {
             if (Distances == null || Distances.Length < 2) return 0;
             return Distances.Length - (isCyclic ? 0 : 1);
         }
-        public float GetLength() => GetLength(Cyclic);
+        public float GetLength() => GetLength(IsCyclic);
         public float GetLength(bool isCyclic)
         {
             if (Distances == null || Distances.Length < 2) return 0;
             var lastIndex = Distances.Length - (isCyclic ? 1 : 2);
             return Distances[lastIndex];
         }
-        public int FindSegmentSafe(float passedPath) => FindSegmentSafe(passedPath, Cyclic, 0);
+        public int FindSegmentSafe(float passedPath) => FindSegmentSafe(passedPath, IsCyclic, 0);
         public int FindSegmentSafe(float passedPath, bool isCyclic) => FindSegmentSafe(passedPath, isCyclic, 0);
-        public int FindSegmentSafe(float passedPath, int startIndex) => FindSegmentSafe(passedPath, Cyclic, startIndex);
+        public int FindSegmentSafe(float passedPath, int startIndex) => FindSegmentSafe(passedPath, IsCyclic, startIndex);
         public int FindSegmentSafe(float passedPath, bool isCyclic, int startIndex)
         {
             if (passedPath <= 0) return 0;
@@ -53,13 +53,13 @@ namespace alexnown.path
             if (segmentStartPath > passedPath) return FindSegmentWithoutChecks(passedPath, startIndex - 1);
             return startIndex;
         }
-        public Vector3 CalculatePosition(float passedPath) => CalculatePosition(passedPath, Cyclic);
+        public Vector3 CalculatePosition(float passedPath) => CalculatePosition(passedPath, IsCyclic);
         public Vector3 CalculatePosition(float passedPath, bool isCyclic)
         {
             int lastIndex = 0;
             return CalculatePosition(passedPath, isCyclic, ref lastIndex);
         }
-        public Vector3 CalculatePosition(float passedPath, ref int lastIntervalIndex) => CalculatePosition(passedPath, Cyclic, ref lastIntervalIndex);
+        public Vector3 CalculatePosition(float passedPath, ref int lastIntervalIndex) => CalculatePosition(passedPath, IsCyclic, ref lastIntervalIndex);
         public Vector3 CalculatePosition(float passedPath, bool isCyclic, ref int lastIntervalIndex)
         {
             if (passedPath <= 0)

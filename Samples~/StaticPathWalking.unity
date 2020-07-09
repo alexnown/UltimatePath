@@ -381,6 +381,7 @@ GameObject:
   - component: {fileID: 1070090855}
   - component: {fileID: 1070090854}
   - component: {fileID: 1070090853}
+  - component: {fileID: 1070090857}
   m_Layer: 0
   m_Name: Walker1
   m_TagString: Untagged
@@ -400,12 +401,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed585a6ce6baf84380079d727328b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PathContainer: {fileID: 2057708904}
-  PassedPath: 0
-  MoveSpeed: 3
-  YoyoMoving: 1
-  OverridePathCycleValue: 0
-  IsCycle: 0
+  _pathContainer: {fileID: 2057708904}
+  _passedDistance: 0
+  OverrideIsCycleValue: 0
+  RelevantIsCycle: 0
 --- !u!23 &1070090854
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -459,12 +458,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1070090852}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.56, y: 0.15, z: 2.14}
+  m_LocalPosition: {x: 4.5000005, y: 0.15, z: 0.50000024}
   m_LocalScale: {x: 0.2, y: 0.3, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1070090857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070090852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0187455b0e04254986b09b648abe87a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 3
+  YoyoMoving: 1
 --- !u!1 &1071134980
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 359984022}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeSize: 0.1
+  NodeSize: 0.05
   AdjustableSize: 1
   Color: {r: 1, g: 0.9899541, b: 0, a: 1}
 --- !u!114 &1071134982
@@ -517,7 +530,7 @@ MonoBehaviour:
   - {x: -1, y: 0, z: 1}
   _storePointsInLocalSpace: 1
   _path:
-    Cyclic: 1
+    IsCyclic: 1
     Points:
     - {x: 2.5, y: 0.15, z: -4.6213202}
     - {x: 4.6213202, y: 0.15, z: -2.5}
@@ -554,6 +567,7 @@ GameObject:
   - component: {fileID: 1223116970}
   - component: {fileID: 1223116969}
   - component: {fileID: 1223116968}
+  - component: {fileID: 1223116972}
   m_Layer: 0
   m_Name: Walker2
   m_TagString: Untagged
@@ -573,12 +587,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed585a6ce6baf84380079d727328b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PathContainer: {fileID: 1071134980}
-  PassedPath: 0
-  MoveSpeed: 3
-  YoyoMoving: 0
-  OverridePathCycleValue: 0
-  IsCycle: 0
+  _pathContainer: {fileID: 1071134980}
+  _passedDistance: 0
+  OverrideIsCycleValue: 0
+  RelevantIsCycle: 0
 --- !u!23 &1223116969
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -632,12 +644,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1223116967}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 0.15, z: -2.5}
+  m_LocalPosition: {x: 2.5, y: 0.15, z: -4.6213202}
   m_LocalScale: {x: 0.2, y: 0.3, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1223116972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223116967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0187455b0e04254986b09b648abe87a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 3
+  YoyoMoving: 0
 --- !u!1 &1310346110
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,7 +694,7 @@ MonoBehaviour:
   m_Script: {fileID: 359984022}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeSize: 0.1
+  NodeSize: 0.05
   AdjustableSize: 1
   Color: {r: 1, g: 0, b: 0.87729645, a: 1}
 --- !u!114 &1310346112
@@ -691,13 +717,13 @@ MonoBehaviour:
   - {x: 4, y: 0, z: 0}
   _storePointsInLocalSpace: 1
   _path:
-    Cyclic: 0
+    IsCyclic: 0
     Points:
-    - {x: -2.4999995, y: 0.15, z: 4.0000005}
-    - {x: -4, y: 0.15, z: 2.0000005}
-    - {x: -2.5, y: 0.15, z: 0}
-    - {x: -1, y: 0.15, z: -2.0000005}
-    - {x: -2.5000005, y: 0.15, z: -4.0000005}
+    - {x: -1.6999996, y: 0.15, z: 4.0000005}
+    - {x: -3.2, y: 0.15, z: 2.0000005}
+    - {x: -1.7, y: 0.15, z: 0}
+    - {x: -0.20000005, y: 0.15, z: -2.0000005}
+    - {x: -1.7000005, y: 0.15, z: -4.0000005}
     Distances:
     - 2.5000002
     - 5.000001
@@ -712,12 +738,121 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310346110}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -2.5, y: 0.15, z: 0}
+  m_LocalPosition: {x: -1.7, y: 0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &1528037222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1528037227}
+  - component: {fileID: 1528037226}
+  - component: {fileID: 1528037225}
+  - component: {fileID: 1528037224}
+  - component: {fileID: 1528037223}
+  m_Layer: 0
+  m_Name: Walker3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1528037223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528037222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0187455b0e04254986b09b648abe87a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 7
+  YoyoMoving: 1
+--- !u!114 &1528037224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528037222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ed585a6ce6baf84380079d727328b0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pathContainer: {fileID: 1310346110}
+  _passedDistance: 3.89
+  OverrideIsCycleValue: 0
+  RelevantIsCycle: 0
+--- !u!23 &1528037225
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528037222}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1528037226
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528037222}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1528037227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528037222}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.3660004, y: 0.15, z: 0.8880006}
+  m_LocalScale: {x: 0.2, y: 0.3, z: 0.2}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2057708904
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,7 +890,7 @@ MonoBehaviour:
   - {x: -1, y: 0, z: 1}
   _storePointsInLocalSpace: 1
   _path:
-    Cyclic: 0
+    IsCyclic: 0
     Points:
     - {x: 4.5000005, y: 0.15, z: 0.50000024}
     - {x: 4.5, y: 0.15, z: 4.5000005}
@@ -792,102 +927,6 @@ MonoBehaviour:
   m_Script: {fileID: 359984022}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeSize: 0.1
+  NodeSize: 0.05
   AdjustableSize: 1
   Color: {r: 0, g: 1, b: 1, a: 1}
---- !u!1 &2146495251
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2146495255}
-  - component: {fileID: 2146495254}
-  - component: {fileID: 2146495253}
-  - component: {fileID: 2146495252}
-  m_Layer: 0
-  m_Name: Walker3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2146495252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146495251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ed585a6ce6baf84380079d727328b0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PathContainer: {fileID: 1310346110}
-  PassedPath: 0
-  MoveSpeed: 7
-  YoyoMoving: 1
-  OverridePathCycleValue: 0
-  IsCycle: 0
---- !u!23 &2146495253
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146495251}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &2146495254
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146495251}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &2146495255
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146495251}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3, y: 0.15, z: -2.5}
-  m_LocalScale: {x: 0.2, y: 0.3, z: 0.2}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
