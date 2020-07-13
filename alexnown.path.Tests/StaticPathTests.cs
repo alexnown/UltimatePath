@@ -15,30 +15,14 @@ namespace alexnown.path
             var path = new StaticPath();
             Assert.IsNull(path.Points);
             Assert.IsNull(path.Distances);
-            Assert.IsFalse(path.IsCyclic);
             path.Points = new Vector3[0];
             path.RecalculateDistances();
             Assert.IsNull(path.Distances);
-            Assert.AreEqual(0, path.GetLength());
+            Assert.AreEqual(0, path.TotalLength);
             path.Points = new[] { Vector3.zero, Vector3.up };
             path.RecalculateDistances();
-            Assert.AreEqual(2, path.Distances.Length);
-            Assert.AreEqual(1, path.GetLength());
-            path.IsCyclic = true;
-            Assert.AreEqual(2, path.GetLength());
-        }
-
-        [Test]
-        public void GetPathTotalLength()
-        {
-            var path = CreateSquarePath();
-            path.RecalculateDistances();
-            Assert.AreEqual(3, path.GetLength(false));
-            Assert.AreEqual(4, path.GetLength(true));
-            path.IsCyclic = false;
-            Assert.AreEqual(path.GetLength(false), path.GetLength());
-            path.IsCyclic = true;
-            Assert.AreEqual(path.GetLength(true), path.GetLength());
+            Assert.AreEqual(1, path.SegmentsCount);
+            Assert.AreEqual(1, path.TotalLength);
         }
 
         [Test]
@@ -46,10 +30,10 @@ namespace alexnown.path
         {
             var path = CreateSquarePath();
             path.RecalculateDistances();
+            Assert.AreEqual(3, path.TotalLength);
             Assert.AreEqual(1f, path.Distances[0]);
             Assert.AreEqual(2f, path.Distances[1]);
             Assert.AreEqual(3f, path.Distances[2]);
-            Assert.AreEqual(4f, path.Distances[3]);
         }
 
         [Test]
@@ -58,7 +42,7 @@ namespace alexnown.path
             var path = CreateSquarePath();
             path.RecalculateDistances();
             var expectedSegment = Mathf.Max(0, Mathf.CeilToInt(passedPath) - 1);
-            if (passedPath < 0 || expectedSegment > path.SegmentsCount())
+            if (passedPath < 0 || expectedSegment > path.SegmentsCount - 1)
                 Assert.Throws(typeof(System.IndexOutOfRangeException), () => path.FindSegmentWithoutChecks(passedPath, 0));
             else Assert.AreEqual(expectedSegment, path.FindSegmentWithoutChecks(passedPath, 0));
         }
@@ -69,18 +53,9 @@ namespace alexnown.path
             var path = CreateSquarePath();
             path.RecalculateDistances();
             var passedPath = 1.5f;
-            if (startIndex < 0 || startIndex >= path.Points.Length)
+            if (startIndex < 0 || startIndex >= path.SegmentsCount)
                 Assert.Throws(typeof(System.IndexOutOfRangeException), () => path.FindSegmentWithoutChecks(passedPath, startIndex));
             else Assert.DoesNotThrow(() => path.FindSegmentWithoutChecks(passedPath, startIndex));
-        }
-
-        [Test]
-        public void FindSegmentSafe_TestCyclicOption()
-        {
-            var path = CreateSquarePath();
-            path.RecalculateDistances();
-            Assert.AreEqual(2, path.FindSegmentSafe(3.5f, false));
-            Assert.AreEqual(3, path.FindSegmentSafe(3.5f, true));
         }
 
         [Test]
@@ -88,7 +63,7 @@ namespace alexnown.path
         {
             var path = CreateSquarePath();
             path.RecalculateDistances();
-            var expectedSegment = Mathf.Clamp(Mathf.CeilToInt(passedPath) - 1, 0, path.SegmentsCount() - 1);
+            var expectedSegment = Mathf.Clamp(Mathf.CeilToInt(passedPath) - 1, 0, path.SegmentsCount - 1);
             Assert.AreEqual(expectedSegment, path.FindSegmentSafe(passedPath));
         }
 
@@ -101,24 +76,13 @@ namespace alexnown.path
         }
 
         [Test]
-        public void CalculatePosition_TestCyclicOption()
-        {
-            var path = CreateSquarePath();
-            path.RecalculateDistances();
-            float passedPath = 3.4f;
-            Assert.AreEqual(path.Points[3], path.CalculatePosition(passedPath, false));
-            var expectedPosition = Vector3.Lerp(path.Points[3], path.Points[0], Mathf.Repeat(passedPath, 1));
-            Assert.AreEqual(expectedPosition, path.CalculatePosition(passedPath, true));
-        }
-
-        [Test]
         public void CalculatePosition_PassedPathArgument([ValueSource(nameof(_passedLengths))] float passedPath)
         {
             var path = CreateSquarePath();
             path.RecalculateDistances();
             Vector3 expectedPosition;
             if (passedPath <= 0) expectedPosition = path.Points[0];
-            else if (passedPath >= path.GetLength()) expectedPosition = path.Points[path.Points.Length - 1];
+            else if (passedPath >= path.TotalLength) expectedPosition = path.Points[path.Points.Length - 1];
             else
             {
                 int pointIndex = Mathf.FloorToInt(passedPath);

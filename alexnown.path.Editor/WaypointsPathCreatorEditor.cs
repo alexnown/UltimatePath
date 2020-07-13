@@ -9,7 +9,6 @@ namespace alexnown.path
         private int _pointIndexForPositionHandle = -1;
         private SerializedProperty _serializedPointsArray;
         private SerializedProperty _serializedIsCyclic;
-        private SerializedProperty _serializedStoreInLocalSpace;
         private GUIStyle _textStyle;
         private Matrix4x4 _ltwMatrix;
 
@@ -17,11 +16,11 @@ namespace alexnown.path
         {
             var pointPath = target as WaypointsPathCreator;
             var newLtw = pointPath.transform.localToWorldMatrix;
-            bool requireUpdatePath = newLtw != _ltwMatrix && pointPath.StorePointsInLocalSpace;
+            bool requireUpdatePath = newLtw != _ltwMatrix;
             _ltwMatrix = newLtw;
             serializedObject.Update();
-            EditorGUILayout.PropertyField(_serializedIsCyclic);
             EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(_serializedIsCyclic);
             EditorGUILayout.PropertyField(_serializedPointsArray, true);
             requireUpdatePath |= EditorGUI.EndChangeCheck();
             serializedObject.ApplyModifiedProperties();
@@ -31,19 +30,11 @@ namespace alexnown.path
                 EditorUtility.SetDirty(pointPath);
             }
             GUILayout.Space(10);
-            EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(_serializedStoreInLocalSpace);
-            if (EditorGUI.EndChangeCheck())
-            {
-                pointPath.ChangePointsSpace(_serializedStoreInLocalSpace.boolValue);
-                EditorUtility.SetDirty(pointPath);
-            }
-            GUILayout.Space(10);
             if (pointPath.Path != null)
             {
                 EditorGUILayout.LabelField($"Path info:");
-                EditorGUILayout.LabelField($"Length:     {pointPath.Path.GetLength()}");
-                EditorGUILayout.LabelField($"Nodes count:     {_serializedPointsArray.arraySize}");
+                EditorGUILayout.LabelField($"Length:     {pointPath.Path.TotalLength}");
+                EditorGUILayout.LabelField($"Nodes count:     {pointPath.Path.Points.Length}");
             }
             else EditorGUILayout.HelpBox("Path not cached!", MessageType.Warning);
             GUILayout.Space(10);
@@ -78,8 +69,7 @@ namespace alexnown.path
             _textStyle.normal.textColor = Color.blue;
             _textStyle.fontSize = 20;
             _serializedPointsArray = serializedObject.FindProperty("Points");
-            _serializedStoreInLocalSpace = serializedObject.FindProperty("_storePointsInLocalSpace");
-            _serializedIsCyclic = serializedObject.FindProperty("_path").FindPropertyRelative("IsCyclic");
+            _serializedIsCyclic = serializedObject.FindProperty("_isCyclic");
         }
 
         private bool DrawClickableNode(Vector3 worldPos, float handlerSize, Color color)

@@ -9,8 +9,6 @@ namespace alexnown.path
 
         [SerializeField]
         private float _passedDistance;
-        public bool OverrideIsCycleValue;
-        public bool RelevantIsCycle;
         private StaticPath _cachedPath;
         public StaticPath Path
         {
@@ -29,13 +27,12 @@ namespace alexnown.path
             }
         }
         public float DistancePassed => _passedDistance;
-        public float PathLength => Path.GetLength(IsPathCyclic);
-        public bool IsPathCyclic => OverrideIsCycleValue ? RelevantIsCycle : Path.IsCyclic;
+        public float PathLength => Path.TotalLength;
 
         public void SetDistancePassed(float distance)
         {
             _passedDistance = distance;
-            transform.position = Path.CalculatePosition(DistancePassed, IsPathCyclic);
+            transform.position = Path.CalculatePosition(DistancePassed);
         }
     }
 }
