@@ -7,12 +7,12 @@ namespace alexnown.path
     {
         private static float[] _passedLengths = new float[] { -100, 0, 1, 1.0001f, 2.5f, 3, 3.5f, 4, 100 };
         private static int[] _startSegments = new int[] { -100, 0, 1, 2, 3, 4, 100 };
-        public StaticPath CreateSquarePath() => new StaticPath { Points = new[] { Vector3.zero, Vector3.up, new Vector3(1, 1, 0), Vector3.right } };
+        public NonUniformPath CreateSquarePath() => new NonUniformPath { Points = new[] { Vector3.zero, Vector3.up, new Vector3(1, 1, 0), Vector3.right } };
 
         [Test]
         public void CheckInitialization()
         {
-            var path = new StaticPath();
+            var path = new NonUniformPath();
             Assert.IsNull(path.Points);
             Assert.IsNull(path.Distances);
             path.Points = new Vector3[0];
@@ -43,8 +43,8 @@ namespace alexnown.path
             path.RecalculateDistances();
             var expectedSegment = Mathf.Max(0, Mathf.CeilToInt(passedPath) - 1);
             if (passedPath < 0 || expectedSegment > path.SegmentsCount - 1)
-                Assert.Throws(typeof(System.IndexOutOfRangeException), () => path.FindSegmentWithoutChecks(passedPath, 0));
-            else Assert.AreEqual(expectedSegment, path.FindSegmentWithoutChecks(passedPath, 0));
+                Assert.Throws(typeof(System.IndexOutOfRangeException), () => path.FindSegmentRecursively(passedPath, 0));
+            else Assert.AreEqual(expectedSegment, path.FindSegmentRecursively(passedPath, 0));
         }
 
         [Test]
@@ -54,8 +54,8 @@ namespace alexnown.path
             path.RecalculateDistances();
             var passedPath = 1.5f;
             if (startIndex < 0 || startIndex >= path.SegmentsCount)
-                Assert.Throws(typeof(System.IndexOutOfRangeException), () => path.FindSegmentWithoutChecks(passedPath, startIndex));
-            else Assert.DoesNotThrow(() => path.FindSegmentWithoutChecks(passedPath, startIndex));
+                Assert.Throws(typeof(System.IndexOutOfRangeException), () => path.FindSegmentRecursively(passedPath, startIndex));
+            else Assert.DoesNotThrow(() => path.FindSegmentRecursively(passedPath, startIndex));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace alexnown.path
             var path = CreateSquarePath();
             path.RecalculateDistances();
             var expectedSegment = Mathf.Clamp(Mathf.CeilToInt(passedPath) - 1, 0, path.SegmentsCount - 1);
-            Assert.AreEqual(expectedSegment, path.FindSegmentSafe(passedPath));
+            Assert.AreEqual(expectedSegment, path.FindSegment(passedPath));
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace alexnown.path
         {
             var path = CreateSquarePath();
             path.RecalculateDistances();
-            Assert.AreEqual(1, path.FindSegmentSafe(1.5f, startIndex));
+            Assert.AreEqual(1, path.FindSegment(1.5f, startIndex));
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace alexnown.path
             path.RecalculateDistances();
             int refSegment = 0;
             path.CalculatePosition(passedPath, ref refSegment);
-            Assert.AreEqual(path.FindSegmentSafe(passedPath), refSegment);
+            Assert.AreEqual(path.FindSegment(passedPath), refSegment);
         }
     }
 }

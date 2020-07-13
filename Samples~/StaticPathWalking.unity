@@ -112,20 +112,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!115 &359984022
-MonoScript:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 5
-  m_Script: 
-  m_DefaultReferences: {}
-  m_Icon: {fileID: 0}
-  m_ExecutionOrder: 0
-  m_ClassName: PathGizmosDrawer
-  m_Namespace: alexnown.path
 --- !u!1 &780317925
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,10 +387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed585a6ce6baf84380079d727328b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pathContainer: {fileID: 2057708904}
+  _pathContainer: {fileID: 2057708908}
   _passedDistance: 0
-  OverrideIsCycleValue: 0
-  RelevantIsCycle: 0
 --- !u!23 &1070090854
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -477,7 +461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 3
-  YoyoMoving: 1
+  Type: 1
 --- !u!1 &1071134980
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,9 +472,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1071134983}
   - component: {fileID: 1071134982}
+  - component: {fileID: 1071134984}
   - component: {fileID: 1071134981}
   m_Layer: 0
-  m_Name: CyclePath
+  m_Name: LoopedPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -505,12 +490,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1071134980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 359984022}
+  m_Script: {fileID: 11500000, guid: 39fb70dc3dadd6c46a8aa2272a3063aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowAlways: 1
   NodeSize: 0.05
   AdjustableSize: 1
-  Color: {r: 1, g: 0.9899541, b: 0, a: 1}
+  Color: {r: 1, g: 0.8311329, b: 0.25, a: 1}
 --- !u!114 &1071134982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,19 +514,7 @@ MonoBehaviour:
   - {x: 1, y: 0, z: -1}
   - {x: 1, y: 0, z: 1}
   - {x: -1, y: 0, z: 1}
-  _storePointsInLocalSpace: 1
-  _path:
-    IsCyclic: 1
-    Points:
-    - {x: 2.5, y: 0.15, z: -4.6213202}
-    - {x: 4.6213202, y: 0.15, z: -2.5}
-    - {x: 2.5, y: 0.15, z: -0.37867975}
-    - {x: 0.37867975, y: 0.15, z: -2.5}
-    Distances:
-    - 2.9999998
-    - 5.9999995
-    - 8.999999
-    - 11.999999
+  _isCyclic: 1
 --- !u!4 &1071134983
 Transform:
   m_ObjectHideFlags: 0
@@ -555,6 +529,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
+--- !u!114 &1071134984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071134980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9925335d544f749b3e5b1f2edfeb65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isNonUniformPath: 1
+  _nonUniformPath:
+    _points:
+    - {x: 2.5, y: 0.15, z: -4.6213202}
+    - {x: 4.6213202, y: 0.15, z: -2.5}
+    - {x: 2.5, y: 0.15, z: -0.37867975}
+    - {x: 0.37867975, y: 0.15, z: -2.5}
+    - {x: 2.5, y: 0.15, z: -4.6213202}
+    _distances:
+    - 2.9999998
+    - 5.9999995
+    - 8.999999
+    - 11.999999
 --- !u!1 &1223116967
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,10 +586,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed585a6ce6baf84380079d727328b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pathContainer: {fileID: 1071134980}
+  _pathContainer: {fileID: 1071134984}
   _passedDistance: 0
-  OverrideIsCycleValue: 0
-  RelevantIsCycle: 0
 --- !u!23 &1223116969
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -663,7 +660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 3
-  YoyoMoving: 0
+  Type: 2
 --- !u!1 &1310346110
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,6 +671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1310346113}
   - component: {fileID: 1310346112}
+  - component: {fileID: 1310346114}
   - component: {fileID: 1310346111}
   m_Layer: 0
   m_Name: LinePath
@@ -691,12 +689,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1310346110}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 359984022}
+  m_Script: {fileID: 11500000, guid: 39fb70dc3dadd6c46a8aa2272a3063aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowAlways: 1
   NodeSize: 0.05
   AdjustableSize: 1
-  Color: {r: 1, g: 0, b: 0.87729645, a: 1}
+  Color: {r: 1, g: 0, b: 0.6231971, a: 1}
 --- !u!114 &1310346112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -715,21 +714,7 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 2, y: 0, z: 1.5}
   - {x: 4, y: 0, z: 0}
-  _storePointsInLocalSpace: 1
-  _path:
-    IsCyclic: 0
-    Points:
-    - {x: -1.6999996, y: 0.15, z: 4.0000005}
-    - {x: -3.2, y: 0.15, z: 2.0000005}
-    - {x: -1.7, y: 0.15, z: 0}
-    - {x: -0.20000005, y: 0.15, z: -2.0000005}
-    - {x: -1.7000005, y: 0.15, z: -4.0000005}
-    Distances:
-    - 2.5000002
-    - 5.000001
-    - 7.5000014
-    - 10.000002
-    - 18.000004
+  _isCyclic: 0
 --- !u!4 &1310346113
 Transform:
   m_ObjectHideFlags: 0
@@ -738,12 +723,37 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310346110}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -1.7, y: 0.15, z: 0}
+  m_LocalPosition: {x: -2.5, y: 0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1310346114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310346110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9925335d544f749b3e5b1f2edfeb65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isNonUniformPath: 1
+  _nonUniformPath:
+    _points:
+    - {x: -2.4999995, y: 0.15, z: 4.0000005}
+    - {x: -4, y: 0.15, z: 2.0000005}
+    - {x: -2.5, y: 0.15, z: 0}
+    - {x: -1, y: 0.15, z: -2.0000005}
+    - {x: -2.5000005, y: 0.15, z: -4.0000005}
+    _distances:
+    - 2.5000002
+    - 5.000001
+    - 7.5000014
+    - 10.000002
 --- !u!1 &1528037222
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,7 +787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 7
-  YoyoMoving: 1
+  Type: 1
 --- !u!114 &1528037224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -790,10 +800,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed585a6ce6baf84380079d727328b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pathContainer: {fileID: 1310346110}
+  _pathContainer: {fileID: 1310346114}
   _passedDistance: 3.89
-  OverrideIsCycleValue: 0
-  RelevantIsCycle: 0
 --- !u!23 &1528037225
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -847,7 +855,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528037222}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.3660004, y: 0.15, z: 0.8880006}
+  m_LocalPosition: {x: -3.1660004, y: 0.15, z: 0.8880006}
   m_LocalScale: {x: 0.2, y: 0.3, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
@@ -863,6 +871,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2057708906}
   - component: {fileID: 2057708905}
+  - component: {fileID: 2057708908}
   - component: {fileID: 2057708907}
   m_Layer: 0
   m_Name: SquarePath
@@ -888,19 +897,7 @@ MonoBehaviour:
   - {x: 1, y: 0, z: -1}
   - {x: 1, y: 0, z: 1}
   - {x: -1, y: 0, z: 1}
-  _storePointsInLocalSpace: 1
-  _path:
-    IsCyclic: 0
-    Points:
-    - {x: 4.5000005, y: 0.15, z: 0.50000024}
-    - {x: 4.5, y: 0.15, z: 4.5000005}
-    - {x: 0.49999952, y: 0.15, z: 4.5}
-    - {x: 0.5, y: 0.15, z: 0.49999952}
-    Distances:
-    - 4
-    - 8
-    - 12
-    - 16
+  _isCyclic: 0
 --- !u!4 &2057708906
 Transform:
   m_ObjectHideFlags: 0
@@ -924,9 +921,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 2057708904}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 359984022}
+  m_Script: {fileID: 11500000, guid: 39fb70dc3dadd6c46a8aa2272a3063aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowAlways: 1
   NodeSize: 0.05
   AdjustableSize: 1
   Color: {r: 0, g: 1, b: 1, a: 1}
+--- !u!114 &2057708908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057708904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e9925335d544f749b3e5b1f2edfeb65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isNonUniformPath: 1
+  _nonUniformPath:
+    _points:
+    - {x: 4.5000005, y: 0.15, z: 0.50000024}
+    - {x: 4.5, y: 0.15, z: 4.5000005}
+    - {x: 0.49999952, y: 0.15, z: 4.5}
+    - {x: 0.5, y: 0.15, z: 0.49999952}
+    _distances:
+    - 4
+    - 8
+    - 12

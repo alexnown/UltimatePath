@@ -1,8 +1,16 @@
 ﻿using UnityEngine;
+
 namespace alexnown.path
 {
-    public class PathGizmosDrawer : MonoBehaviour
+    public interface IDrawablePath
     {
+        Vector3[] Waypoints { get; }
+    }
+
+    [RequireComponent(typeof(PathComponent))]
+    public class GizmosPathDrawer : MonoBehaviour
+    {
+        public bool ShowAlways = true;
         public float NodeSize = 0.1f;
         public bool AdjustableSize = true;
         public Color Color = Color.cyan;
@@ -11,18 +19,15 @@ namespace alexnown.path
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
+            if (!ShowAlways) return;
+            if (!Application.isPlaying && UnityEditor.Selection.activeGameObject == gameObject) return;
             if (_pathContainer == null) _pathContainer = GetComponent<IDrawablePath>();
             var points = _pathContainer?.Waypoints;
-            if (points == null || UnityEditor.Selection.activeGameObject == gameObject) return;
+            if (points == null) return;
             Gizmos.color = Color;
-            bool cyclicPath = _pathContainer.IsCyclic;
             for (int i = 0; i < points.Length; i++)
             {
-                int nextIndex = (i + 1) % points.Length;
-                if (i < points.Length - 1 || cyclicPath)
-                {
-                    Gizmos.DrawLine(points[i], points[nextIndex]);
-                }
+                if (i < points.Length - 1) Gizmos.DrawLine(points[i], points[i + 1]);
                 var handlerSize = AdjustableSize ? UnityEditor.HandleUtility.GetHandleSize(points[i]) : 1;
                 Gizmos.DrawSphere(points[i], NodeSize * handlerSize);
             }

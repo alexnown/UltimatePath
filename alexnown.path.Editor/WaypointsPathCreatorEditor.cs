@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace alexnown.path
 {
-    [CustomEditor(typeof(WaypointsPathCreator))]
+    [CustomEditor(typeof(WaypointsPathProvider))]
     public class WaypointsPathCreatorEditor : Editor
     {
         private int _pointIndexForPositionHandle = -1;
@@ -14,42 +14,28 @@ namespace alexnown.path
 
         public override void OnInspectorGUI()
         {
-            var pointPath = target as WaypointsPathCreator;
+            var pointPath = target as WaypointsPathProvider;
             var newLtw = pointPath.transform.localToWorldMatrix;
             bool requireUpdatePath = newLtw != _ltwMatrix;
             _ltwMatrix = newLtw;
             serializedObject.Update();
+            GUI.enabled = !Application.isPlaying;
             EditorGUI.BeginChangeCheck();
+            GUILayout.Space(10);
             EditorGUILayout.PropertyField(_serializedIsCyclic);
             EditorGUILayout.PropertyField(_serializedPointsArray, true);
             requireUpdatePath |= EditorGUI.EndChangeCheck();
             serializedObject.ApplyModifiedProperties();
-            if (requireUpdatePath)
+            if (requireUpdatePath && !Application.isPlaying)
             {
                 pointPath.CachePath();
                 EditorUtility.SetDirty(pointPath);
-            }
-            GUILayout.Space(10);
-            if (pointPath.Path != null)
-            {
-                EditorGUILayout.LabelField($"Path info:");
-                EditorGUILayout.LabelField($"Length:     {pointPath.Path.TotalLength}");
-                EditorGUILayout.LabelField($"Nodes count:     {pointPath.Path.Points.Length}");
-            }
-            else EditorGUILayout.HelpBox("Path not cached!", MessageType.Warning);
-            GUILayout.Space(10);
-            var drawer = pointPath.GetComponent<PathGizmosDrawer>();
-            var hasPathDrawer = drawer != null;
-            if (GUILayout.Button(hasPathDrawer ? "Remove gizmos drawer" : "Add gizmos drawer"))
-            {
-                if (hasPathDrawer) GameObject.DestroyImmediate(drawer);
-                else pointPath.gameObject.AddComponent<PathGizmosDrawer>();
             }
         }
 
         private void ConvertPointsArray(bool toLocalSpace)
         {
-            var pointPath = target as WaypointsPathCreator;
+            var pointPath = target as WaypointsPathProvider;
             var transform = pointPath.transform;
             for (int i = 0; i < _serializedPointsArray.arraySize; i++)
             {
@@ -62,9 +48,9 @@ namespace alexnown.path
 
         private void OnEnable()
         {
-            var pointPath = target as WaypointsPathCreator;
+            var pointPath = target as WaypointsPathProvider;
             _ltwMatrix = pointPath.transform.localToWorldMatrix;
-            if (pointPath.Path == null) pointPath.CachePath();
+            if (!Application.isPlaying) pointPath.CachePath();
             _textStyle = new GUIStyle();
             _textStyle.normal.textColor = Color.blue;
             _textStyle.fontSize = 20;
@@ -80,9 +66,10 @@ namespace alexnown.path
 
         private void OnSceneGUI()
         {
+            if (Application.isPlaying) return;
             serializedObject.Update();
-            var pointPath = target as WaypointsPathCreator;
-            var drawer = pointPath.GetComponent<PathGizmosDrawer>();
+            var pointPath = target as WaypointsPathProvider;
+            var drawer = pointPath.GetComponent<GizmosPathDrawer>();
             var nodeColor = drawer != null ? drawer.Color : Color.cyan;
             var currentEvent = Event.current;
             bool addPointMode = currentEvent.shift;
