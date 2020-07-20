@@ -2,20 +2,21 @@
 
 namespace alexnown.path
 {
+
     [RequireComponent(typeof(PathComponent))]
     [RequireComponent(typeof(GizmosPathDrawer))]
-    public class WaypointsPathProvider : MonoBehaviour
+    public class WaypointsPathProvider : APathProvider
     {
         public Vector3[] Points = new[] { Vector3.zero, Vector3.right };
         [SerializeField]
         private bool _isCyclic;
         private PathComponent _path;
 
-        public Vector3 GetPointPosition(int pointIndex) => transform.TransformPoint(Points[pointIndex]);
-        public void SetPointPosition(int pointIndex, Vector3 worldPos)
+        public override Vector3 GetPointPosition(int pointIndex) => transform.TransformPoint(Points[pointIndex]);
+        public override void SetPointPosition(int pointIndex, Vector3 worldPos)
             => Points[pointIndex] = transform.InverseTransformPoint(worldPos);
 
-        public void CachePath()
+        public override void CachePath()
         {
             if (_path == null) _path = GetComponent<PathComponent>();
             var nonUniform = _path.Path as NonUniformPath;
@@ -28,6 +29,11 @@ namespace alexnown.path
                 nonUniform.Points[i] = GetPointPosition(i % Points.Length);
             nonUniform.RecalculateDistances();
             _path.StorePath(nonUniform);
+        }
+
+        public override Vector3 GetPositionBetweenPoints(int first, int second, float ratio = 0.5f)
+        {
+            return Vector3.Lerp(GetPointPosition(first), GetPointPosition(second), ratio);
         }
     }
 }
