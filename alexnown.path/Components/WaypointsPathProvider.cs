@@ -2,14 +2,13 @@
 
 namespace alexnown.path
 {
-
     [RequireComponent(typeof(PathComponent))]
     [RequireComponent(typeof(GizmosPathDrawer))]
     public class WaypointsPathProvider : APathProvider
     {
         public Vector3[] Points = new[] { Vector3.zero, Vector3.right };
         [SerializeField]
-        private bool _isCyclic;
+        private bool _isCyclic = false;
         private PathComponent _path;
 
         public override Vector3 GetPointPosition(int pointIndex) => transform.TransformPoint(Points[pointIndex]);

@@ -3,14 +3,15 @@ using UnityEngine;
 
 namespace alexnown.path
 {
-    public abstract class BasePathEditor : Editor
+    public abstract class BasePathEditor<T> : Editor where T : APathProvider
     {
         private GUIStyle _textStyle;
         private Matrix4x4 _ltwMatrix;
         protected SerializedProperty _serializedPointsArray;
         protected SerializedProperty _serializedIsCyclic;
-        private APathProvider _pathProvider;
+        protected T _pathProvider;
 
+        protected abstract void DrawNodesConnection(int first, int second, Color color);
         public override void OnInspectorGUI()
         {
             var newLtw = (target as Component).transform.localToWorldMatrix;
@@ -20,15 +21,19 @@ namespace alexnown.path
             GUI.enabled = !Application.isPlaying;
             EditorGUI.BeginChangeCheck();
             GUILayout.Space(10);
-            EditorGUILayout.PropertyField(_serializedIsCyclic);
-            EditorGUILayout.PropertyField(_serializedPointsArray, true);
+            DrawInspectorGui();
             requireUpdatePath |= EditorGUI.EndChangeCheck();
             serializedObject.ApplyModifiedProperties();
             if (requireUpdatePath && !Application.isPlaying) CachePath();
         }
+        protected virtual void DrawInspectorGui()
+        {
+            EditorGUILayout.PropertyField(_serializedIsCyclic);
+            EditorGUILayout.PropertyField(_serializedPointsArray, true);
+        }
         private void OnEnable()
         {
-            _pathProvider = target as APathProvider;
+            _pathProvider = target as T;
             _ltwMatrix = _pathProvider.transform.localToWorldMatrix;
             if (!Application.isPlaying) CachePath();
             _textStyle = new GUIStyle();
@@ -75,12 +80,12 @@ namespace alexnown.path
             var nodesCount = _serializedPointsArray.arraySize;
             for (int i = 1; i < nodesCount; i++)
             {
-                var pos = _pathProvider.GetPositionBetweenPoints(i - 1, i);
+                var pos = _pathProvider.GetPositionBetweenPoints(i - 1, i, 0.5f);
                 added |= DrawAddNodeButton(i, pos);
             }
             if (_serializedIsCyclic.boolValue)
             {
-                var pos = _pathProvider.GetPositionBetweenPoints(0, nodesCount - 1);
+                var pos = _pathProvider.GetPositionBetweenPoints(nodesCount - 1, 0, 0.5f);
                 added |= DrawAddNodeButton(_serializedPointsArray.arraySize, pos);
             }
             else
@@ -103,17 +108,19 @@ namespace alexnown.path
             {
                 _serializedPointsArray.InsertArrayElementAtIndex(index);
                 serializedObject.ApplyModifiedProperties();
-                _pathProvider.SetPointPosition(index, position);
+                InitializeAddedPoint(index, position);
             }
             return clicked;
         }
 
-        protected virtual void DrawNodesConnection(int first, int second, Color color)
+        protected virtual void InitializeAddedPoint(int index, Vector3 position)
         {
-            var firstPosition = _pathProvider.GetPointPosition(first);
-            var secondPosition = _pathProvider.GetPointPosition(second);
-            Handles.color = color;
-            Handles.DrawLine(firstPosition, secondPosition);
+            _pathProvider.SetPointPosition(index, position);
+        }
+
+        protected virtual void OnPointMoved(int index, Vector3 worldPos)
+        {
+            _pathProvider.SetPointPosition(index, worldPos);
         }
 
         protected virtual bool DrawPathNode(int index, Color color)
@@ -139,7 +146,7 @@ namespace alexnown.path
                     : Handles.FreeMoveHandle(pointWorldPosition, Quaternion.identity, 0.2f * handlerSize, 0.2f * Vector3.one, Handles.SphereHandleCap);
                 if (EditorGUI.EndChangeCheck())
                 {
-                    _pathProvider.SetPointPosition(index, pointWorldPosition);
+                    OnPointMoved(index, pointWorldPosition);
                     return true;
                 }
             }
