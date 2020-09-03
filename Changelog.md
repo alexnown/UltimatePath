@@ -1,3 +1,16 @@
+# [0.0.3] - 2020-09-03
+
+## New Features
+
+* Added UniformPath: has equal intervals between points.
+* Added BezierPathProvider, that segments path as uniform path.
+* Added LockAxis option to path provider.
+
+## Changes
+
+* Uniform and non uniform path serialized in PathComponent.
+* Removed IsCyclic variable from StaticPath (now this variable kept only in path providers).
+
 # [0.0.2] - 2020-07-09
 
 ## Changes

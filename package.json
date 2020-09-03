@@ -1,7 +1,7 @@
 {
   "name": "alexnown.path",
   "description": "Creating and movement along baked paths.",
-  "version": "0.0.2-preview",
+  "version": "0.0.3-preview",
   "unity": "2018.4",
   "displayName": "Ultimate path",
   "keywords": [
