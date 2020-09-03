@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using Unity.Entities;
 
 namespace alexnown.path
 {
-    public class StaticPathFollower : MonoBehaviour
+    public class StaticPathFollower : MonoBehaviour, IConvertGameObjectToEntity
     {
         [SerializeField]
         private GameObject _pathContainer = null;
@@ -36,6 +37,16 @@ namespace alexnown.path
         {
             _passedDistance = distance;
             transform.position = Path.CalculatePosition(DistancePassed, IsPathCyclic);
+        }
+
+        public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        {
+            dstManager.AddComponentData(entity, new DistancePassed
+            {
+                Value = _passedDistance,
+                OverrideIsCycleValue = OverrideIsCycleValue,
+                RelevantIsCycle = RelevantIsCycle
+            });
         }
     }
 }

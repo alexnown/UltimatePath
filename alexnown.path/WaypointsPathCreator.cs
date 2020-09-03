@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using Unity.Entities;
+using Unity.Collections;
 
 namespace alexnown.path
 {
-    public class WaypointsPathCreator : MonoBehaviour, IDrawablePath, IStaticPathContainer
+    public class WaypointsPathCreator : MonoBehaviour, IDrawablePath, IStaticPathContainer, IConvertGameObjectToEntity
     {
         public StaticPath Path => _path;
         public bool StorePointsInLocalSpace => _storePointsInLocalSpace;
@@ -45,6 +47,23 @@ namespace alexnown.path
             for (int i = 0; i < Points.Length; i++)
                 Path.Points[i] = GetPointPosition(i);
             Path.RecalculateDistances();
+        }
+
+        public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        {
+            using (var builder = new BlobBuilder(Allocator.Temp))
+            {
+                ref var root = ref builder.ConstructRoot<StaticPathData>();
+                root.IsCyclic = _path.IsCyclic;
+                var pathPoints = _path.Points;
+                var points = builder.Allocate(ref root.Points, pathPoints.Length);
+                for (int i = 0; i < pathPoints.Length; i++) points[i] = pathPoints[i];
+                var pathDistances = _path.Distances;
+                var distances = builder.Allocate(ref root.Distances, pathDistances.Length);
+                for (int i = 0; i < pathDistances.Length; i++) distances[i] = pathDistances[i];
+                var allocatedData = builder.CreateBlobAssetReference<StaticPathData>(Allocator.Persistent);
+                dstManager.AddComponentData(entity, new StaticPathReference { Value = allocatedData });
+            }
         }
     }
 }
