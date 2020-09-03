@@ -11,7 +11,7 @@ namespace alexnown.path
         private bool _isCyclic = false;
         public BezierPoint[] Points = new[] {
             new BezierPoint { Position = Vector3.zero, Handle1 = 0.5f * Vector3.left, Handle2 = 0.5f * Vector3.right },
-            new BezierPoint { Position = Vector3.up, Handle1 = new Vector3(0.5f, 1), Handle2 = new Vector3(-0.5f, 1) }
+            new BezierPoint { Position = Vector3.up, Handle1 = 0.5f * Vector3.left, Handle2 = 0.5f * Vector3.right }
         };
         [Header("Segmenting")]
         public int SegmentsPerUnit = 20;
@@ -23,8 +23,8 @@ namespace alexnown.path
         public Vector3 GetPointPositionAndHandlers(int pointIndex, out Vector3 handler1, out Vector3 handler2)
         {
             var data = Points[pointIndex];
-            handler1 = transform.TransformPoint(data.Handle1);
-            handler2 = transform.TransformPoint(data.Handle2);
+            handler1 = transform.TransformPoint(data.Handle1 + data.Position);
+            handler2 = transform.TransformPoint(data.Handle2 + data.Position);
             return transform.TransformPoint(data.Position);
         }
         public override void SetPointPosition(int pointIndex, Vector3 worldPos)
@@ -32,6 +32,7 @@ namespace alexnown.path
 
         public override void CachePath()
         {
+            if (LockedAxis != Axis.None) LockAxis(LockedAxis);
             if (_path == null) _path = GetComponent<PathComponent>();
             if (_cachedPositions == null) _cachedPositions = new List<Vector3>();
             else _cachedPositions.Clear();
@@ -66,19 +67,29 @@ namespace alexnown.path
             var data2 = Points[second];
             firstPosition = transform.TransformPoint(data1.Position);
             secondPosition = transform.TransformPoint(data2.Position);
-            var handle1 = transform.TransformPoint(data1.Handle2);
-            var handle2 = transform.TransformPoint(data2.Handle1);
+            var handle1 = transform.TransformPoint(data1.Handle2 + data1.Position);
+            var handle2 = transform.TransformPoint(data2.Handle1 + data2.Position);
             return DistanceCalculator.GetCubicCurvePoint(firstPosition, handle1, handle2, secondPosition, ratio);
         }
-
+        public override void LockAxis(Axis axis)
+        {
+            LockedAxis = axis;
+            if (axis == Axis.None) return;
+            foreach (var pointData in Points)
+            {
+                pointData.Position = LockPositionAxis(pointData.Position, axis);
+                pointData.Handle1 = LockPositionAxis(pointData.Handle1, axis);
+                pointData.Handle2 = LockPositionAxis(pointData.Handle2, axis);
+            }
+        }
         public float ApproximateSegmentLength(int first, int second, int segmentsCount)
         {
             var data1 = Points[first];
             var data2 = Points[second];
             var firstPosition = transform.TransformPoint(data1.Position);
             var secondPosition = transform.TransformPoint(data2.Position);
-            var handle1 = transform.TransformPoint(data1.Handle2);
-            var handle2 = transform.TransformPoint(data2.Handle1);
+            var handle1 = transform.TransformPoint(data1.Handle2 + data1.Position);
+            var handle2 = transform.TransformPoint(data2.Handle1 + data2.Position);
             var segmentSize = 1f / segmentsCount;
             float ratio = 0, totalDistance = 0;
             var previousPosition = firstPosition;

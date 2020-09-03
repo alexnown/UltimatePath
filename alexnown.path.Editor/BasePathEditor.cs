@@ -9,6 +9,7 @@ namespace alexnown.path
         private Matrix4x4 _ltwMatrix;
         protected SerializedProperty _serializedPointsArray;
         protected SerializedProperty _serializedIsCyclic;
+        protected SerializedProperty _serializedLockedAxis;
         protected T _pathProvider;
 
         protected abstract void DrawNodesConnection(int first, int second, Color color);
@@ -30,6 +31,7 @@ namespace alexnown.path
         {
             EditorGUILayout.PropertyField(_serializedIsCyclic);
             EditorGUILayout.PropertyField(_serializedPointsArray, true);
+            EditorGUILayout.PropertyField(_serializedLockedAxis);
         }
         private void OnEnable()
         {
@@ -41,6 +43,7 @@ namespace alexnown.path
             _textStyle.fontSize = 20;
             _serializedPointsArray = serializedObject.FindProperty("Points");
             _serializedIsCyclic = serializedObject.FindProperty("_isCyclic");
+            _serializedLockedAxis = serializedObject.FindProperty("LockedAxis");
         }
 
         protected void CachePath()

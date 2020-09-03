@@ -17,6 +17,7 @@ namespace alexnown.path
 
         public override void CachePath()
         {
+            if (LockedAxis != Axis.None) LockAxis(LockedAxis);
             if (_path == null) _path = GetComponent<PathComponent>();
             var nonUniform = _path.Path as NonUniformPath;
             if (nonUniform == null) nonUniform = new NonUniformPath();
@@ -33,6 +34,16 @@ namespace alexnown.path
         public override Vector3 GetPositionBetweenPoints(int first, int second, float ratio = 0.5f)
         {
             return Vector3.Lerp(GetPointPosition(first), GetPointPosition(second), ratio);
+        }
+
+        public override void LockAxis(Axis axis)
+        {
+            LockedAxis = axis;
+            if (axis == Axis.None) return;
+            for (var i = 0; i < Points.Length; i++)
+            {
+                Points[i] = LockPositionAxis(Points[i], axis);
+            }
         }
     }
 }
