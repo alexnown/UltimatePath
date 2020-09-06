@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace alexnown.path
 {
-    [CustomEditor(typeof(StaticPathFollower))]
+    [CustomEditor(typeof(StaticPathFollowerAuthoring))]
     public class StaticPathFollowerEditor : Editor
     {
         private bool _usePassedRatio;
@@ -14,7 +14,7 @@ namespace alexnown.path
 
         public override void OnInspectorGUI()
         {
-            var pathFollower = target as StaticPathFollower;
+            var pathFollower = target as StaticPathFollowerAuthoring;
             serializedObject.Update();
             GUILayout.Space(10);
             EditorGUILayout.PropertyField(_pathContainer);

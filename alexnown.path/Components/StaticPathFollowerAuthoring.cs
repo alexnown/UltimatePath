@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using Unity.Entities;
 
 namespace alexnown.path
 {
     [ExecuteAlways]
-    public class StaticPathFollower : MonoBehaviour
+    public class StaticPathFollowerAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     {
         [SerializeField]
         private PathComponent _pathContainer = null;
@@ -28,6 +29,11 @@ namespace alexnown.path
         }
         public float DistancePassed => _passedDistance;
         public float PathLength => Path == null ? 0 : Path.TotalLength;
+
+        public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        {
+            dstManager.AddComponentData(entity, new DistancePassed { Value = DistancePassed });
+        }
 
         public void SetDistancePassed(float distance)
         {
